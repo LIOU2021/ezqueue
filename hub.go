@@ -26,3 +26,9 @@ func Close(queueName ...string) error {
 
 	return nil
 }
+
+func CloseAll() {
+	for i := range h {
+		Close(i)
+	}
+}

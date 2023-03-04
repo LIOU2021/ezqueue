@@ -10,28 +10,31 @@ import (
 const (
 	queuePM = "pm"
 	queueRD = "rd"
+	counter = 5
 )
 
 func main() {
 	// create two queue
 	queue.Add(queuePM, queueRD)
 
+	// create consumer
+	queue.Consumer()
+
 	// create task
 	go task1()
 	go task2()
 
-	queue.Consumer()
-
 	select {
 	case <-time.After(10 * time.Second):
-		queue.Close(queuePM, queueRD)
+		// queue.Close(queuePM, queueRD)
+		queue.CloseAll()
 		log.Println("finish ...")
 		break
 	}
 }
 
 func task1() {
-	for i := 0; i < 10; i++ {
+	for i := 0; i < counter; i++ {
 		v := i
 		log.Println("pm send task: ", v)
 		err := queue.Task(queuePM, func() {
@@ -45,7 +48,7 @@ func task1() {
 }
 
 func task2() {
-	for i := 0; i < 10; i++ {
+	for i := 0; i < counter; i++ {
 		v := i
 		log.Println("rd send task: ", v)
 		err := queue.Task(queueRD, func() {
