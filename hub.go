@@ -11,6 +11,7 @@ var h = make(map[string]chan func())
 func Add(queueName ...string) {
 	for _, v := range queueName {
 		h[v] = make(chan func())
+		fmt.Printf("queue %s create ! \n", v)
 	}
 }
 
