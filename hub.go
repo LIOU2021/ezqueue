@@ -1,8 +1,12 @@
-package ezqueue
+package queue
 
-var q = make(map[string]chan string)
+var h = make(map[string]chan func())
 
 func init() {
-	q["pm"] = make(chan string)
-	q["rd"] = make(chan string)
+	h["pm"] = make(chan func())
+	h["rd"] = make(chan func())
+}
+
+func Add(queueName string) {
+	h[queueName] = make(chan func())
 }

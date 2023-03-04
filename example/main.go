@@ -3,12 +3,12 @@ package main
 import (
 	"time"
 
-	"github.com/LIOU2021/ezqueue"
+	queue "github.com/LIOU2021/ezqueue"
 )
 
 func main() {
-	ezqueue.Producer()
-	ezqueue.Consumer()
+	queue.Producer()
+	queue.Consumer()
 
 	for {
 		time.Sleep(1 * time.Second)

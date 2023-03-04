@@ -1,4 +1,4 @@
-package ezqueue
+package queue
 
 import (
 	"log"
@@ -9,22 +9,22 @@ func Consumer() {
 	go func() {
 		for {
 			select {
-			case msg, ok := <-q["pm"]:
+			case msg, ok := <-h["pm"]:
 				if !ok {
-					q["pm"] = nil
+					h["pm"] = nil
 				} else {
-					log.Printf("pm receive: %s\n", msg)
+					msg()
 				}
 
-			case msg, ok := <-q["rd"]:
+			case msg, ok := <-h["rd"]:
 				if !ok {
-					q["rd"] = nil
+					h["rd"] = nil
 				} else {
-					log.Printf("rd receive: %s\n", msg)
+					msg()
 				}
 			}
 
-			if q["rd"] == nil && q["pm"] == nil {
+			if h["rd"] == nil && h["pm"] == nil {
 				log.Println("done------------------")
 				break
 				// 這裡有問題，到底怎退出的?

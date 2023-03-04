@@ -1,7 +1,7 @@
-package ezqueue
+package queue
 
 import (
-	"strconv"
+	"log"
 	"sync"
 )
 
@@ -11,19 +11,19 @@ func Producer() {
 		wg.Add(2)
 		go func() {
 			for i := 0; i < 10; i++ {
-				q["pm"] <- "p1: " + strconv.Itoa(i)
+				h["pm"] <- func() { log.Println("pm receive: ", i) }
 			}
 			wg.Done()
 		}()
 
 		go func() {
 			for i := 0; i < 10; i++ {
-				q["rd"] <- "r1: " + strconv.Itoa(i)
+				h["rd"] <- func() { log.Println("rd receive: ", i) }
 			}
 			wg.Done()
 		}()
 		wg.Wait()
-		close(q["pm"])
-		close(q["rd"])
+		close(h["pm"])
+		close(h["rd"])
 	}()
 }
