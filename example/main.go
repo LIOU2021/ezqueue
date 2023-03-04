@@ -13,19 +13,18 @@ const (
 )
 
 func main() {
-	queue.Add(queuePM)
-	queue.Add(queueRD)
+	// create two queue
+	queue.Add(queuePM, queueRD)
 
+	// create task
 	go task1()
 	go task2()
 
-	// queue.Producer()
 	queue.Consumer()
 
 	select {
 	case <-time.After(10 * time.Second):
-		queue.Close(queuePM)
-		queue.Close(queueRD)
+		queue.Close(queuePM, queueRD)
 		log.Println("finish ...")
 		break
 	}
@@ -43,8 +42,6 @@ func task1() {
 			log.Fatal(err)
 		}
 	}
-
-	// queue.Close(queuePM)
 }
 
 func task2() {
@@ -59,6 +56,4 @@ func task2() {
 			log.Fatal(err)
 		}
 	}
-
-	// queue.Close(queueRD)
 }
