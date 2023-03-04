@@ -12,7 +12,8 @@ func Producer() {
 		go func() {
 			for i := 0; i < 10; i++ {
 				log.Println("pm send : ", i)
-				h["pm"] <- func() { log.Println("pm receive: ", i) }
+				value := i
+				h["pm"] <- func() { log.Println("pm receive: ", value) }
 			}
 			wg.Done()
 		}()
@@ -20,7 +21,8 @@ func Producer() {
 		go func() {
 			for i := 0; i < 10; i++ {
 				log.Println("rd send : ", i)
-				h["rd"] <- func() { log.Println("rd receive: ", i) }
+				value := i
+				h["rd"] <- func() { log.Println("rd receive: ", value) }
 			}
 			wg.Done()
 		}()
