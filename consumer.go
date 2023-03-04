@@ -10,7 +10,7 @@ const (
 )
 
 func Consumer() {
-	for i, _ := range h {
+	for i := range h {
 		go func(queueName string) {
 			for {
 				select {
