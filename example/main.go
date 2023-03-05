@@ -47,6 +47,10 @@ func main() {
 		// q2.Close()
 		queue.CloseAll()
 		time.Sleep(1 * time.Second)
+
+		go dispatch(q1)
+		go dispatch(q2)
+		time.Sleep(5 * time.Second)
 		log.Println("timeout runtime.NumGoroutine(): ", runtime.NumGoroutine())
 		log.Println("finish ...")
 		break

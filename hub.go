@@ -15,6 +15,7 @@ type BasicQueue struct {
 	interval       time.Duration
 	msg            chan func()
 	msgLen         atomic.Int32
+	msgIsClose     atomic.Bool
 }
 
 func (qu *BasicQueue) GetName() string {
@@ -22,7 +23,12 @@ func (qu *BasicQueue) GetName() string {
 }
 
 func (qu *BasicQueue) Close() {
+	for qu.msgLen.Load() > 0 {
+		fmt.Printf("close after waiting for %d tasks for queue \"%s\"\n", qu.msgLen.Load(), qu.name)
+		time.Sleep(1 * time.Second)
+	}
 	close(qu.msg)
+	qu.msgIsClose.Store(true)
 	fmt.Printf("queue %s close !\n", qu.name)
 }
 
@@ -70,13 +76,6 @@ func CloseAll() {
 	wg.Add(len(h))
 	for _, queue := range h {
 		go func(queue *BasicQueue) {
-			for {
-				fmt.Printf("close after waiting for %d tasks for queue \"%s\"\n", queue.msgLen.Load(), queue.name)
-				if queue.msgLen.Load() == int32(0) {
-					break
-				}
-				time.Sleep(1 * time.Second)
-			}
 			queue.Close()
 			wg.Done()
 		}(queue)

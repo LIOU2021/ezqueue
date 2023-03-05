@@ -2,48 +2,62 @@
 $ go run main.go
 queue pm create ! interval: 3s, consumerNumber: 2 
 queue rd create ! interval: 3s, consumerNumber: 2 
-2023/03/05 23:00:14 pm send task: 0
-2023/03/05 23:00:14 pm send task: 1
-2023/03/05 23:00:14 rd send task: 0
-2023/03/05 23:00:14 pm receive task: 0
-2023/03/05 23:00:14 pm send task: 2
-2023/03/05 23:00:14 pm receive task: 1
-2023/03/05 23:00:14 rd send task: 1
-2023/03/05 23:00:14 rd send task: 2
-2023/03/05 23:00:14 rd send task: 3
-2023/03/05 23:00:14 rd receive task: 0
-2023/03/05 23:00:14 pm send task: 3
-2023/03/05 23:00:14 pm send task: 4
-2023/03/05 23:00:14 rd receive task: 1
-2023/03/05 23:00:14 rd send task: 4
-2023/03/05 23:00:15 before runtime.NumGoroutine():  12
-2023/03/05 23:00:16 before runtime.NumGoroutine():  12
-2023/03/05 23:00:17 before runtime.NumGoroutine():  12
-2023/03/05 23:00:18 before runtime.NumGoroutine():  12
-2023/03/05 23:00:19 before runtime.NumGoroutine():  12
-2023/03/05 23:00:19 rd receive task: 2
-2023/03/05 23:00:19 pm receive task: 2
-2023/03/05 23:00:19 pm receive task: 3
-2023/03/05 23:00:19 rd receive task: 3
-2023/03/05 23:00:20 before runtime.NumGoroutine():  8
-2023/03/05 23:00:21 before runtime.NumGoroutine():  8
-2023/03/05 23:00:22 before runtime.NumGoroutine():  8
-2023/03/05 23:00:23 before runtime.NumGoroutine():  8
-2023/03/05 23:00:24 before runtime.NumGoroutine():  8
-2023/03/05 23:00:24 pm receive task: 4
-2023/03/05 23:00:24 rd receive task: 4
-2023/03/05 23:00:25 before runtime.NumGoroutine():  6
-2023/03/05 23:00:26 before runtime.NumGoroutine():  6
-2023/03/05 23:00:27 before runtime.NumGoroutine():  6
-2023/03/05 23:00:28 before runtime.NumGoroutine():  6
-2023/03/05 23:00:29 before runtime.NumGoroutine():  6
-2023/03/05 23:00:30 before runtime.NumGoroutine():  6
-2023/03/05 23:00:31 before runtime.NumGoroutine():  6
-2023/03/05 23:00:32 before runtime.NumGoroutine():  6
-2023/03/05 23:00:33 before runtime.NumGoroutine():  6
-2023/03/05 23:00:34 After runtime.NumGoroutine():  6
-queue pm close !
+2023/03/05 23:58:33 rd send task: 0
+2023/03/05 23:58:33 rd send task: 1
+2023/03/05 23:58:33 pm send task: 0
+2023/03/05 23:58:33 rd receive task: 0
+2023/03/05 23:58:33 rd send task: 2
+2023/03/05 23:58:33 rd send task: 3
+2023/03/05 23:58:33 rd send task: 4
+2023/03/05 23:58:33 rd receive task: 1
+2023/03/05 23:58:33 pm send task: 1
+2023/03/05 23:58:33 pm send task: 2
+2023/03/05 23:58:33 pm receive task: 0
+2023/03/05 23:58:33 pm receive task: 1
+2023/03/05 23:58:33 pm send task: 3
+2023/03/05 23:58:33 pm send task: 4
+2023/03/05 23:58:34 before runtime.NumGoroutine():  12
+2023/03/05 23:58:35 before runtime.NumGoroutine():  12
+2023/03/05 23:58:36 before runtime.NumGoroutine():  12
+2023/03/05 23:58:37 before runtime.NumGoroutine():  12
+2023/03/05 23:58:38 before runtime.NumGoroutine():  12
+2023/03/05 23:58:38 rd receive task: 2
+2023/03/05 23:58:38 rd receive task: 3
+2023/03/05 23:58:38 pm receive task: 2
+2023/03/05 23:58:38 pm receive task: 3
+2023/03/05 23:58:39 before runtime.NumGoroutine():  8
+2023/03/05 23:58:40 before runtime.NumGoroutine():  8
+2023/03/05 23:58:41 before runtime.NumGoroutine():  8
+2023/03/05 23:58:42 before runtime.NumGoroutine():  8
+2023/03/05 23:58:43 After runtime.NumGoroutine():  8
+close after waiting for 1 tasks for queue "pm"
+close after waiting for 1 tasks for queue "rd"
+2023/03/05 23:58:43 pm receive task: 4
+2023/03/05 23:58:43 rd receive task: 4
+2023/03/05 23:58:43 before runtime.NumGoroutine():  8
+close after waiting for 1 tasks for queue "rd"
+close after waiting for 1 tasks for queue "pm"
+2023/03/05 23:58:44 before runtime.NumGoroutine():  8
+close after waiting for 1 tasks for queue "pm"
+close after waiting for 1 tasks for queue "rd"
+2023/03/05 23:58:45 before runtime.NumGoroutine():  8
 queue rd close !
-2023/03/05 23:00:34 before runtime.NumGoroutine():  2
-2023/03/05 23:00:35 timeout runtime.NumGoroutine():  2
-2023/03/05 23:00:35 finish ...
+queue pm close !
+2023/03/05 23:58:46 before runtime.NumGoroutine():  4
+2023/03/05 23:58:47 rd send task: 0
+2023/03/05 23:58:47 rd send task: 1
+2023/03/05 23:58:47 rd send task: 2
+2023/03/05 23:58:47 pm send task: 0
+2023/03/05 23:58:47 pm send task: 1
+2023/03/05 23:58:47 pm send task: 2
+2023/03/05 23:58:47 pm send task: 3
+2023/03/05 23:58:47 rd send task: 3
+2023/03/05 23:58:47 rd send task: 4
+2023/03/05 23:58:47 pm send task: 4
+2023/03/05 23:58:47 before runtime.NumGoroutine():  4
+2023/03/05 23:58:48 before runtime.NumGoroutine():  2
+2023/03/05 23:58:49 before runtime.NumGoroutine():  2
+2023/03/05 23:58:50 before runtime.NumGoroutine():  2
+2023/03/05 23:58:51 before runtime.NumGoroutine():  2
+2023/03/05 23:58:52 timeout runtime.NumGoroutine():  2
+2023/03/05 23:58:52 finish ...
