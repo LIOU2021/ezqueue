@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"runtime"
 	"time"
 
 	queue "github.com/LIOU2021/ezqueue"
@@ -24,10 +25,20 @@ func main() {
 	go task1()
 	go task2()
 
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+			log.Println("before runtime.NumGoroutine(): ", runtime.NumGoroutine())
+		}
+	}()
+
 	select {
 	case <-time.After(10 * time.Second):
 		// queue.Close(queuePM, queueRD)
+		log.Println("After runtime.NumGoroutine(): ", runtime.NumGoroutine())
 		queue.CloseAll()
+		time.Sleep(1 * time.Second)
+		log.Println("timeout runtime.NumGoroutine(): ", runtime.NumGoroutine())
 		log.Println("finish ...")
 		break
 	}
