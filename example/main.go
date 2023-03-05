@@ -39,6 +39,7 @@ func task1() {
 		log.Println("pm send task: ", v)
 		err := queue.Task(queuePM, func() {
 			log.Println("pm receive task: ", v)
+			time.Sleep(2 * time.Second)
 		})
 
 		if err != nil {
@@ -53,6 +54,7 @@ func task2() {
 		log.Println("rd send task: ", v)
 		err := queue.Task(queueRD, func() {
 			log.Println("rd receive task: ", v)
+			time.Sleep(2 * time.Second)
 		})
 
 		if err != nil {
