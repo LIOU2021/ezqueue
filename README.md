@@ -33,12 +33,78 @@ EzQueue is an excellent choice when you need a lightweight and easy-to-use packa
         time.Sleep(2 * time.Second)
         log.Println("do something end ... ")
     })
-    
+
     q2.Task(func() {
         log.Println("do something start ... ")
         time.Sleep(2 * time.Second)
         log.Println("do something end ... ")
     })
     ```
+## full example
+- your main.go
+    ```go
+    package main
+
+    import (
+        "log"
+        "time"
+
+        queue "github.com/LIOU2021/ezqueue"
+    )
+
+    const (
+        queuePM = "pm"
+        queueRD = "rd"
+    )
+
+    func main() {
+        // create two queue
+        q1 := queue.NewQueue(queuePM)
+        q2 := queue.NewQueue(queueRD)
+
+        // q1.SetConsumerNumber(2) // option. default 1
+        q2.SetConsumerNumber(2) // option. default 1
+
+        // add queue
+        queue.Add(q1, q2)
+
+        // create consumer
+        queue.Consumer()
+
+        q1.Task(func() {
+            log.Println("q1 do something start ... ")
+            time.Sleep(2 * time.Second)
+            log.Println("q1 do something end ... ")
+        })
+
+        q2.Task(func() {
+            log.Println("q2-1 do something start ... ")
+            time.Sleep(2 * time.Second)
+            log.Println("q2-1 do something end ... ")
+        })
+
+        q2.Task(func() {
+            log.Println("q2-2 do something start ... ")
+            time.Sleep(2 * time.Second)
+            log.Println("q2-2 do something end ... ")
+        })
+
+        for {
+            time.Sleep(1 * time.Second)
+        }
+    }
+    ```
+- output
+    ```bash
+    $ go run main.go
+    queue pm create ! consumerNumber: 1 
+    queue rd create ! consumerNumber: 2 
+    2023/03/06 02:07:01 q1 do something start ... 
+    2023/03/06 02:07:01 q2-2 do something start ... 
+    2023/03/06 02:07:01 q2-1 do something start ...
+    2023/03/06 02:07:03 q2-1 do something end ... 
+    2023/03/06 02:07:03 q2-2 do something end ... 
+    2023/03/06 02:07:03 q1 do something end ...
+    ```    
 ## more example
 - usage example see example/
