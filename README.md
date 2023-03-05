@@ -22,11 +22,11 @@ EzQueue is an excellent choice when you need a lightweight and easy-to-use packa
     ```go
     queue.Add(q1, q2)
     ```
-3. run consumer
+5. run consumer
     ```go
     func queue.Consumer()
     ```
-4. dispatch your job
+6. dispatch your job
     ```go
     q1.Task(func() {
         log.Println("do something start ... ")
