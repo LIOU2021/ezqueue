@@ -11,7 +11,7 @@ import (
 const (
 	queuePM = "pm"
 	queueRD = "rd"
-	counter = 5
+	counter = 10
 )
 
 func main() {
@@ -19,10 +19,8 @@ func main() {
 	q1 := queue.NewQueue(queuePM)
 	q2 := queue.NewQueue(queueRD)
 
-	q1.SetConsumerNumber(2)         // option. default 1
-	q1.SetInterval(time.Second * 3) // option. default 0
-	q2.SetConsumerNumber(2)         // option. default 1
-	q2.SetInterval(time.Second * 3) // option. default 0
+	// q1.SetConsumerNumber(2) // option. default 1
+	q2.SetConsumerNumber(2) // option. default 1
 
 	// add queue
 	queue.Add(q1, q2)
@@ -41,13 +39,14 @@ func main() {
 	}()
 
 	select {
-	case <-time.After(10 * time.Second):
+	case <-time.After(5 * time.Second):
 		log.Println("After runtime.NumGoroutine(): ", runtime.NumGoroutine())
 		// q1.Close()
 		// q2.Close()
+		log.Println("execute CloseAll")
 		queue.CloseAll()
 		time.Sleep(1 * time.Second)
-
+		log.Println("dispatch again")
 		go dispatch(q1)
 		go dispatch(q2)
 		time.Sleep(5 * time.Second)
@@ -62,8 +61,9 @@ func dispatch(queue *queue.BasicQueue) {
 		v := i
 		log.Printf("%s send task: %d\n", queue.GetName(), v)
 		queue.Task(func() {
-			log.Printf("%s receive task: %d", queue.GetName(), v)
+			log.Printf("%s process task: %d", queue.GetName(), v)
 			time.Sleep(2 * time.Second)
+			log.Printf("%s finish task: %d", queue.GetName(), v)
 		})
 	}
 }

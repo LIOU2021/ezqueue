@@ -12,7 +12,6 @@ var h = make(map[string]*BasicQueue)
 type BasicQueue struct {
 	name           string
 	consumerNumber int
-	interval       time.Duration
 	msg            chan func()
 	msgLen         atomic.Int32
 	msgIsClose     atomic.Bool
@@ -43,22 +42,10 @@ func (qu *BasicQueue) GetConsumerNumber() int {
 	return qu.consumerNumber
 }
 
-func (qu *BasicQueue) SetInterval(time time.Duration) {
-	if time < 0 {
-		time = 0
-	}
-	qu.interval = time
-}
-
-func (qu *BasicQueue) GetInterval() time.Duration {
-	return qu.interval
-}
-
 func NewQueue(name string) *BasicQueue {
 	return &BasicQueue{
 		name:           name,
 		consumerNumber: 1,
-		interval:       time.Second * 0,
 		msg:            make(chan func()),
 	}
 }
@@ -67,7 +54,7 @@ func NewQueue(name string) *BasicQueue {
 func Add(queue ...*BasicQueue) {
 	for _, v := range queue {
 		h[v.name] = v
-		fmt.Printf("queue %s create ! interval: %v, consumerNumber: %d \n", v.name, v.interval, v.consumerNumber)
+		fmt.Printf("queue %s create ! consumerNumber: %d \n", v.name, v.consumerNumber)
 	}
 }
 

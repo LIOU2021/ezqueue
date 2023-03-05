@@ -10,7 +10,17 @@ EzQueue is an excellent choice when you need a lightweight and easy-to-use packa
     ```
 2. create your queue
     ```go
-    func queue.Add(queueName ...string)
+    q1:=queue.NewQueue("myQueue01")
+    q2:=queue.NewQueue("myQueue02")
+    ```
+3. custom config
+    ```go
+    // q1.SetConsumerNumber(2) // option. default 1
+	q2.SetConsumerNumber(2) // option. default 1
+    ```
+4. add queue
+    ```go
+    queue.Add(q1, q2)
     ```
 3. run consumer
     ```go
@@ -18,10 +28,17 @@ EzQueue is an excellent choice when you need a lightweight and easy-to-use packa
     ```
 4. dispatch your job
     ```go
-    err := queue.Task(queuePM, func() {
-			log.Println("pm receive task: ", v)
-			time.Sleep(2 * time.Second)
-		})
+    q1.Task(func() {
+        log.Println("do something start ... ")
+        time.Sleep(2 * time.Second)
+        log.Println("do something end ... ")
+    })
+    
+    q2.Task(func() {
+        log.Println("do something start ... ")
+        time.Sleep(2 * time.Second)
+        log.Println("do something end ... ")
+    })
     ```
 ## more example
 - usage example see example/
