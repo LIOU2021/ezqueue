@@ -1,19 +1,7 @@
 package queue
 
-import (
-	"errors"
-	"fmt"
-)
-
-// add task like producer
-func Task(queueName string, f func()) error {
-	if h[queueName] == nil {
-		return errors.New(fmt.Sprintf("queue name %s not exists", queueName))
-	}
-
+func (qu *BasicQueue) Task(f func()) {
 	go func() {
-		h[queueName] <- f
+		qu.msg <- f
 	}()
-
-	return nil
 }

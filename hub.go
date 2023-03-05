@@ -1,34 +1,69 @@
 package queue
 
 import (
-	"errors"
 	"fmt"
+	"time"
 )
 
-var h = make(map[string]chan func())
+var h = make(map[string]*BasicQueue)
 
-// add queue by name
-func Add(queueName ...string) {
-	for _, v := range queueName {
-		h[v] = make(chan func())
-		fmt.Printf("queue %s create ! \n", v)
+type BasicQueue struct {
+	name           string
+	consumerNumber int
+	interval       time.Duration
+	msg            chan func()
+}
+
+func (qu *BasicQueue) GetName() string {
+	return qu.name
+}
+
+func (qu *BasicQueue) Close() {
+	close(qu.msg)
+	fmt.Printf("queue %s close !\n", qu.name)
+}
+
+func (qu *BasicQueue) SetConsumerNumber(number int) {
+	if number < 1 {
+		number = 1
+	}
+	qu.consumerNumber = number
+}
+
+func (qu *BasicQueue) GetConsumerNumber() int {
+	return qu.consumerNumber
+}
+
+func (qu *BasicQueue) SetInterval(time time.Duration) {
+	if time < 0 {
+		time = 0
+	}
+	qu.interval = time
+}
+
+func (qu *BasicQueue) GetInterval() time.Duration {
+	return qu.interval
+}
+
+func NewQueue(name string) *BasicQueue {
+	return &BasicQueue{
+		name:           name,
+		consumerNumber: 1,
+		interval:       time.Second * 0,
+		msg:            make(chan func()),
 	}
 }
 
-func Close(queueName ...string) error {
-	for _, v := range queueName {
-		if h[v] == nil {
-			return errors.New(fmt.Sprintf("queue name %s not exists", v))
-		}
-		close(h[v])
-		fmt.Printf("queue %s close ! \n", v)
+// add queue by name
+func Add(queue ...*BasicQueue) {
+	for _, v := range queue {
+		h[v.name] = v
+		fmt.Printf("queue %s create ! interval: %v, consumerNumber: %d \n", v.name, v.interval, v.consumerNumber)
 	}
-
-	return nil
 }
 
 func CloseAll() {
-	for i := range h {
-		Close(i)
+	for _, queue := range h {
+		queue.Close()
 	}
 }

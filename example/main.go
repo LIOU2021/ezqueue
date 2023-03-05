@@ -16,14 +16,22 @@ const (
 
 func main() {
 	// create two queue
-	queue.Add(queuePM, queueRD)
+	q1 := queue.NewQueue(queuePM)
+	q2 := queue.NewQueue(queueRD)
+
+	q1.SetConsumerNumber(2)         // option. default 1
+	q1.SetInterval(time.Second * 3) // option. default 0
+	q2.SetConsumerNumber(2)         // option. default 1
+	q2.SetInterval(time.Second * 3) // option. default 0
+
+	// add queue
+	queue.Add(q1, q2)
 
 	// create consumer
 	queue.Consumer()
 
-	// create task
-	go task1()
-	go task2()
+	go dispatch(q1)
+	go dispatch(q2)
 
 	go func() {
 		for {
@@ -33,9 +41,10 @@ func main() {
 	}()
 
 	select {
-	case <-time.After(10 * time.Second):
-		// queue.Close(queuePM, queueRD)
+	case <-time.After(20 * time.Second):
 		log.Println("After runtime.NumGoroutine(): ", runtime.NumGoroutine())
+		// q1.Close()
+		// q2.Close()
 		queue.CloseAll()
 		time.Sleep(1 * time.Second)
 		log.Println("timeout runtime.NumGoroutine(): ", runtime.NumGoroutine())
@@ -44,32 +53,13 @@ func main() {
 	}
 }
 
-func task1() {
+func dispatch(queue *queue.BasicQueue) {
 	for i := 0; i < counter; i++ {
 		v := i
-		log.Println("pm send task: ", v)
-		err := queue.Task(queuePM, func() {
-			log.Println("pm receive task: ", v)
+		log.Printf("%s send task: %d\n", queue.GetName(), v)
+		queue.Task(func() {
+			log.Printf("%s receive task: %d", queue.GetName(), v)
 			time.Sleep(2 * time.Second)
 		})
-
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-}
-
-func task2() {
-	for i := 0; i < counter; i++ {
-		v := i
-		log.Println("rd send task: ", v)
-		err := queue.Task(queueRD, func() {
-			log.Println("rd receive task: ", v)
-			time.Sleep(2 * time.Second)
-		})
-
-		if err != nil {
-			log.Fatal(err)
-		}
 	}
 }
