@@ -41,7 +41,7 @@ func main() {
 	}()
 
 	select {
-	case <-time.After(20 * time.Second):
+	case <-time.After(10 * time.Second):
 		log.Println("After runtime.NumGoroutine(): ", runtime.NumGoroutine())
 		// q1.Close()
 		// q2.Close()

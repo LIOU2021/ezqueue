@@ -2,6 +2,8 @@ package queue
 
 import (
 	"fmt"
+	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -12,6 +14,7 @@ type BasicQueue struct {
 	consumerNumber int
 	interval       time.Duration
 	msg            chan func()
+	msgLen         atomic.Int32
 }
 
 func (qu *BasicQueue) GetName() string {
@@ -63,7 +66,20 @@ func Add(queue ...*BasicQueue) {
 }
 
 func CloseAll() {
+	var wg sync.WaitGroup
+	wg.Add(len(h))
 	for _, queue := range h {
-		queue.Close()
+		go func(queue *BasicQueue) {
+			for {
+				fmt.Printf("close after waiting for %d tasks for queue \"%s\"\n", queue.msgLen.Load(), queue.name)
+				if queue.msgLen.Load() == int32(0) {
+					break
+				}
+				time.Sleep(1 * time.Second)
+			}
+			queue.Close()
+			wg.Done()
+		}(queue)
 	}
+	wg.Wait()
 }
